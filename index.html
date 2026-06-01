@@ -740,7 +740,7 @@ select option { background: var(--bg3); }
 /* ═══════════════════════════════════════════════════════
    CONFIGURAÇÃO — editar conforme necessário
    ═══════════════════════════════════════════════════════ */
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyLKRcBS5Hj1sI4RIpP7X8fUvdMDdrR27kvjjA1IQQUf-GNc1q-Aq5ESMzwK20tE8yO/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyCc6_g-S6CnbLvIAuqG0vhXmfCoc6-VgRhK98PYC2d2QdX4m5wH_oSEM0zpNCdLJLx/exec';
 
 const TOKENS = {
   'Rph7Kx':'P001','mTq3Nw':'P002','Jv9sLp':'P003',
@@ -1183,7 +1183,7 @@ function renderCaract(mId) {
 }
 
 function selectOpt(groupId, fieldId, val, btn) {
-  document.querySelectorAll(`#${groupId} .opt-btn-sm`).forEach(b => b.classList.remove('active'));
+  document.querySelectorAll(`#${groupId} .opt-btn, #${groupId} .opt-btn-sm`).forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById(fieldId).value = val;
 }

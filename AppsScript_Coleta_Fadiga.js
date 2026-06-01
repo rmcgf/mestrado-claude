@@ -98,11 +98,18 @@ const COLUNAS = [
 
 function doPost(e) {
   try {
+    console.log('🔵 doPost chamado');
+    console.log('postData:', e.postData?.contents?.substring(0, 100));
+
     const data = JSON.parse(e.postData.contents);
     const mId = (data.momento || '').toLowerCase(); // 'm1', 'm2' ou 'm3'
     const participante = data.codigo_participante;
 
+    console.log('Participante:', participante);
+    console.log('Momento:', mId);
+
     if (!participante || !['m1','m2','m3'].includes(mId)) {
+      console.log('❌ Dados inválidos');
       return resposta('erro', 'Dados inválidos: participante ou momento ausente.');
     }
 
