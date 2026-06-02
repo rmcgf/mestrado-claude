@@ -816,7 +816,7 @@ function setApp(html) {
 
 function header() {
   return `<div class="app-header">
-    <div class="logo">Coleta de Fadiga · 1º/2º GT<br><span style="color:var(--text-dim);font-size:11px;font-family:var(--font-body);font-weight:400">Força Aérea Brasileira</span></div>
+    <div class="logo">Análise da Fadiga Psicofisiológica na Fase Pré-Voo em Pilotos do 1º/2º GT</div>
     <div class="pilot-id">Participante: ${PARTICIPANT}</div>
   </div>`;
 }
@@ -866,15 +866,15 @@ function renderHome() {
   const m = STATE;
   const cards = [
     { id:'m1', n:'01', title:'DIA SEM VOO', sub:'Baseline — Caracterização + IPAQ + VFC/PVT + Escalas',
-      desc:'Questionários de caracterização e atividade física, coleta fisiológica e escalas de fadiga/sonolência. ~20 min.' },
+      desc:'Questionários de caracterização e atividade física, coleta fisiológica e escalas de fadiga/sonolência.' },
     { id:'m2', n:'02', title:'ANTES DO PRÉ-VOO', sub:'Dia do voo — Pré-Missão + VFC/PVT + Escalas',
-      desc:'Questionário pré-missão, coleta fisiológica e escalas. ~15 min.' },
+      desc:'Questionário pré-missão, coleta fisiológica e escalas.' },
     { id:'m3', n:'03', title:'APÓS O PRÉ-VOO', sub:'Antes de acionar motores — VFC/PVT + NASA-TLX + Escalas',
-      desc:'Coleta fisiológica, NASA-TLX e escalas de fadiga/sonolência. ~15 min.' }
+      desc:'Coleta fisiológica, NASA-TLX e escalas de fadiga/sonolência.' }
   ];
 
   let html = `<div class="screen fade-in">${header()}
-    <div class="section-title">MISSÃO DE COLETA</div>`;
+    <div class="section-title">Etapas da Pesquisa</div>`;
 
   cards.forEach((c, i) => {
     const st = m[c.id];
@@ -923,14 +923,14 @@ function startMoment(mId) {
    DEFINIÇÃO DOS PASSOS POR MOMENTO
    ═══════════════════════════════════════════════════════ */
 const STEPS = {
-  m1: ['tcle','caract','ipaq','pausa','kss','sps','obs'],
-  m2: ['premissao_a','premissao_b','pausa','kss','sps','obs'],
-  m3: ['pausa','nasatlx','kss','sps','obs']
+  m1: ['tcle','caract','ipaq','pausa','kss','sps'],
+  m2: ['premissao_a','premissao_b','pausa','kss','sps'],
+  m3: ['pausa','nasatlx','kss','sps']
 };
 
 const STEP_LABELS = {
   tcle:'TCLE', caract:'CARACTERIZAÇÃO', ipaq:'IPAQ',
-  pausa:'PAUSA VFC+PVT', kss:'KSS', sps:'SPS', obs:'OBSERVAÇÕES',
+  pausa:'PAUSA VFC+PVT', kss:'KSS', sps:'SPS',
   premissao_a:'PRÉ-MISSÃO A', premissao_b:'PRÉ-MISSÃO B', nasatlx:'NASA-TLX'
 };
 
@@ -947,7 +947,6 @@ function renderStep(mId) {
     pausa: () => renderPausa(mId, stepIdx, total),
     kss: () => renderKSS(mId, stepIdx, total),
     sps: () => renderSPS(mId, stepIdx, total),
-    obs: () => renderObs(mId, stepIdx, total),
     premissao_a: () => renderPremissaoA(mId),
     premissao_b: () => renderPremissaoB(mId),
     nasatlx: () => renderNASATLX(mId)
@@ -998,7 +997,7 @@ function renderTCLE(mId) {
     ${progressBar(stepIdx+1, total, 'TCLE')}
     <div class="section-title">TCLE</div>
     <div class="card">
-      <div class="section-subtitle">TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO</div>
+      <div class="section-subtitle" style="font-weight:700">TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO</div>
       <div class="tcle-scroll-hint">↕ Role para ler o documento completo</div>
       <div class="tcle-body" id="tcle-scroll">
 
@@ -1011,7 +1010,7 @@ function renderTCLE(mId) {
         </div>
 
         <div class="tcle-section">
-          <p>Prezado Piloto, você está sendo convidado a participar como voluntário da pesquisa detalhada acima. Este documento contém todas as informações necessárias sobre o estudo. Leia-o com atenção e, caso tenha qualquer dúvida, não hesite em perguntar ao pesquisador. Sua participação não é obrigatória. Esta pesquisa segue os princípios éticos de autonomia, beneficência, não maleficência e justiça, em conformidade com a Resolução nº 466/2012 do Conselho Nacional de Saúde.</p>
+          <p>Prezado Piloto, você está sendo convidado a participar como voluntário da pesquisa detalhada abaixo. Este documento contém todas as informações necessárias sobre o estudo. Leia-o com atenção e, caso tenha qualquer dúvida, não hesite em perguntar ao pesquisador. Sua participação não é obrigatória. Esta pesquisa segue os princípios éticos, em conformidade com a Resolução nº 466/2012 do Conselho Nacional de Saúde.</p>
         </div>
 
         <div class="tcle-section">
@@ -1019,9 +1018,9 @@ function renderTCLE(mId) {
           <p>Este estudo busca compreender como a complexidade das atividades realizadas na fase de pré-voo impacta o estado de fadiga psicofisiológica dos pilotos, gerando conhecimento que possa contribuir para o aprimoramento da segurança operacional e do bem-estar dos tripulantes.</p>
           <p>Caso decida participar, sua colaboração ocorrerá em três etapas:</p>
           <ul>
-            <li><strong>Etapa 1 (Dia sem voo):</strong> Questionário de Caracterização + IPAQ + coleta VFC (Polar H10, 4 min) + PVT + KSS + SPS. ~20 min.</li>
-            <li><strong>Etapa 2 (Dia do voo, antes do pré-voo):</strong> Questionário Pré-Missão + coleta VFC + PVT + KSS + SPS. ~15 min.</li>
-            <li><strong>Etapa 3 (Após o pré-voo, antes de acionar motores):</strong> Coleta VFC + PVT + NASA-TLX + KSS + SPS. ~15 min.</li>
+            <li><strong>Etapa 1 (Dia sem voo):</strong> Questionário de Caracterização + IPAQ + coleta VFC (Polar H10, 4 min) + PVT + KSS + SPS.</li>
+            <li><strong>Etapa 2 (Dia do voo, antes do pré-voo):</strong> Questionário Pré-Missão + coleta VFC + PVT + KSS + SPS.</li>
+            <li><strong>Etapa 3 (Após o pré-voo, antes de acionar motores):</strong> Coleta VFC + PVT + NASA-TLX + KSS + SPS.</li>
           </ul>
         </div>
 
@@ -1234,7 +1233,7 @@ function renderIPAQ(mId) {
     <div class="card">
       <div class="section-subtitle">SEÇÃO 1 — CAMINHADA</div>
       <div class="field-group">
-        <label class="field-label">1a) Em quantos dias da última semana você CAMINHOU por pelo menos 10 minutos contínuos (transporte, lazer ou exercício)? <span class="required">*</span></label>
+        <label class="field-label">1a) Em quantos dias da última semana você CAMINHOU por pelo menos 10 minutos contínuos (deslocamento, lazer ou exercício)? <span class="required">*</span></label>
         <div class="options-row" id="ipaq1a-opts">
           ${['Nenhum','1','2','3','4','5','6','7'].map(v=>`<button class="opt-btn-sm ${d.m1_ipaq_1a===v?'active':''}" onclick="selectOpt('ipaq1a-opts','m1_ipaq_1a','${v}',this);ipaqToggle('ipaq1b','${v}')">${v}</button>`).join('')}
         </div>
@@ -1419,7 +1418,7 @@ function renderPremissaoA(mId) {
       </div>
 
       <div class="field-group">
-        <label class="field-label">Função Operacional (nesta missão) <span class="required">*</span></label>
+        <label class="field-label">Função Operacional (neste primeiro trecho da missão) <span class="required">*</span></label>
         <div class="options-list" id="funcao-op-opts">
           ${[['PF','PF — Pilot Flying'],['PM','PM — Pilot Monitoring']].map(([v,l])=>
             `<button class="opt-btn ${d.m2_funcao_operacional===v?'active':''}" onclick="selectOpt('funcao-op-opts','m2_funcao_operacional','${v}',this)">${l}</button>`
@@ -1824,22 +1823,22 @@ function renderNASATLX(mId) {
 
   const dims = [
     { key:'m3_tlx_mental',    name:'DEMANDA MENTAL',
-      q:'Quanta atividade mental e perceptual foi necessária (pensar, decidir, calcular, memorizar, olhar, pesquisar)? Foi fácil ou estressante, simples ou complexo?',
+      q:'Quanta atividade mental e perceptiva foi necessária (pensar, decidir, calcular, memorizar, pesquisar, etc.)?',
       left:'Extremamente Baixa', right:'Extremamente Alta' },
     { key:'m3_tlx_fisica',    name:'DEMANDA FÍSICA',
-      q:'Quanta atividade física foi exigida (puxar, empurrar, controlar, ativar)? Foi fácil ou árduo, lento ou rápido?',
+      q:'Quanta atividade física foi exigida (andar, puxar, empurrar, controlar, etc.)?',
       left:'Extremamente Baixa', right:'Extremamente Alta' },
     { key:'m3_tlx_temporal',  name:'DEMANDA TEMPORAL',
-      q:'Quanta pressão de tempo foi sentida pela taxa ou ritmo das tarefas? Foi lento e folgado ou rápido e estressante?',
+      q:'Quanta pressão de tempo você sentiu devido à demanda ou ritmo em que as tarefas ou elementos da tarefa ocorreram?',
       left:'Extremamente Baixa', right:'Extremamente Alta' },
     { key:'m3_tlx_desempenho_raw', name:'DESEMPENHO',
-      q:'Quão bem-sucedido você se sente em cumprir os objetivos da tarefa? Quão satisfeito está com seu desempenho?',
+      q:'Quão bem-sucedido você se sente em cumprir os objetivos das tarefas do pré-voo? Quão satisfeito está com seu desempenho?',
       left:'Falha Total', right:'Perfeito' },
     { key:'m3_tlx_esforco',   name:'ESFORÇO',
       q:'Quão duro você teve que trabalhar (mental e fisicamente) para atingir seu nível de desempenho?',
       left:'Extremamente Baixo', right:'Extremamente Alto' },
     { key:'m3_tlx_frustracao', name:'FRUSTRAÇÃO',
-      q:'Quão inseguro, desencorajado, irritado, estressado ou ansioso você se sentiu, em oposição a seguro, encorajado, satisfeito, calmo ou complacente?',
+      q:'Quão inseguro, desencorajado, irritado, estressado e aborrecido você se sentiu durante a tarefa?',
       left:'Extremamente Baixa', right:'Extremamente Alta' }
   ];
 
@@ -1850,8 +1849,12 @@ function renderNASATLX(mId) {
       <div class="tlx-dim-question">${dim.q}</div>
       <div class="tlx-scale-wrap">
         <div class="tlx-poles"><span>${dim.left}</span><span>${dim.right}</span></div>
-        <input type="range" class="tlx-slider" id="${dim.key}" min="1" max="20" step="1"
-          value="${val}" oninput="updateTLX('${dim.key}')">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--text-dim);min-width:16px;text-align:center">0</span>
+          <input type="range" class="tlx-slider" id="${dim.key}" min="0" max="20" step="1"
+            value="${val}" oninput="updateTLX('${dim.key}')" style="flex:1">
+          <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--text-dim);min-width:20px;text-align:center">20</span>
+        </div>
         <div class="tlx-value-display" id="${dim.key}_disp">${val}</div>
       </div>
     </div>`;
@@ -1896,41 +1899,7 @@ function submitNASATLX(mId) {
   advanceStep(mId);
 }
 
-/* ═══════════════════════════════════════════════════════
-   STEP: OBSERVAÇÕES
-   ═══════════════════════════════════════════════════════ */
-function renderObs(mId, stepIdx, total) {
-  const obsKey = mId + '_obs';
-  const d = STATE[mId].data;
-
-  setApp(`<div class="screen slide-up">
-    ${header()}
-    ${progressBar(stepIdx+1, total, 'OBSERVAÇÕES')}
-    <div class="section-title">OBSERVAÇÕES</div>
-
-    <div class="card">
-      <div class="section-subtitle">CAMPO LIVRE — OPCIONAL</div>
-      <div class="field-group">
-        <label class="field-label">Alguma observação sobre esta coleta?</label>
-        <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;font-style:italic">
-          Ex: situação atípica, mal-estar, intercorrência no pré-voo, problema técnico...
-        </p>
-        <textarea id="${obsKey}" rows="5" placeholder="Digite aqui (opcional)...">${d[obsKey]||''}</textarea>
-      </div>
-    </div>
-
-    ${backButton(mId)}
-    <button class="btn-primary" onclick="submitObs('${mId}','${obsKey}')">CONCLUIR MOMENTO →</button>
-    ${footer()}
-  </div>`);
-}
-
-function submitObs(mId, obsKey) {
-  const v = document.getElementById(obsKey)?.value || '';
-  STATE[mId].data[obsKey] = v;
-  saveState();
-  advanceStep(mId);
-}
+/* campo de observações removido */
 
 /* ═══════════════════════════════════════════════════════
    CONCLUSÃO DO MOMENTO
