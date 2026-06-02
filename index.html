@@ -745,16 +745,15 @@ select option { background: var(--bg3); }
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyCc6_g-S6CnbLvIAuqG0vhXmfCoc6-VgRhK98PYC2d2QdX4m5wH_oSEM0zpNCdLJLx/exec';
 
 const TOKENS = {
-  'Rph7Kx':'P001','mTq3Nw':'P002','Jv9sLp':'P003',
-  'bXc4Ym':'P004','nFd8Wr':'P005','Ek2tAz':'P006',
-  'Gs5uBo':'P007','Hj6vCi':'P008','Lk1wDe':'P009',
-  'Mn0xEf':'P010','Op3yFg':'P011','Pq4zGh':'P012',
-  'Qr5aHi':'P013','Rs6bIj':'P014','St7cJk':'P015',
-  'Tu8dKl':'P016','Uv9eLm':'P017','Vw0fMn':'P018',
-  'Wx1gNo':'P019','Xy2hOp':'P020','Yz3iPq':'P021',
-  'Za4jQr':'P022','Ab5kRs':'P023','Bc6lSt':'P024',
-  'Cd7mTu':'P025','De8nUv':'P026','Ef9oVw':'P027',
-  'Fg0pWx':'P028','Gh1qXy':'P029','Hi2rYz':'P030'
+  'Rph7Kx':'P01','mTq3Nw':'P02','Jv9sLp':'P03',
+  'bXc4Ym':'P04','nFd8Wr':'P05','Ek2tAz':'P06',
+  'Gs5uBo':'P07','Hj6vCi':'P08','Lk1wDe':'P09',
+  'Mn0xEf':'P10','Op3yFg':'P11','Pq4zGh':'P12',
+  'Qr5aHi':'P13','Rs6bIj':'P14','St7cJk':'P15',
+  'Tu8dKl':'P16','Uv9eLm':'P17','Vw0fMn':'P18',
+  'Wx1gNo':'P19','Xy2hOp':'P20','Yz3iPq':'P21',
+  'Za4jQr':'P22','Ab5kRs':'P23','Bc6lSt':'P24',
+  'Cd7mTu':'P25'
 };
 
 /* ═══════════════════════════════════════════════════════
@@ -887,7 +886,7 @@ function renderHome() {
     let bottom = '';
 
     if (done) {
-      const ts = st.endTs ? new Date(st.endTs).toLocaleString('pt-BR') : '';
+      const ts = st.endTs ? new Date(st.endTs).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
       bottom = `<div class="moment-done-info">✔ Concluído em ${ts}</div>`;
     } else if (locked) {
       bottom = `<div class="locked-info">🔒 Disponível após concluir Momento ${i}</div>`;
@@ -915,7 +914,7 @@ function renderHome() {
 
 function startMoment(mId) {
   const s = STATE[mId];
-  if (!s.startTs) { s.startTs = new Date().toISOString(); saveState(); }
+  if (!s.startTs) { s.startTs = new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}); saveState(); }
   renderStep(mId);
 }
 
@@ -1235,17 +1234,14 @@ function renderIPAQ(mId) {
       <div class="field-group">
         <label class="field-label">1a) Em quantos dias da última semana você CAMINHOU por pelo menos 10 minutos contínuos (deslocamento, lazer ou exercício)? <span class="required">*</span></label>
         <div class="options-row" id="ipaq1a-opts">
-          ${['Nenhum','1','2','3','4','5','6','7'].map(v=>`<button class="opt-btn-sm ${d.m1_ipaq_1a===v?'active':''}" onclick="selectOpt('ipaq1a-opts','m1_ipaq_1a','${v}',this);ipaqToggle('ipaq1b','${v}')">${v}</button>`).join('')}
+          ${['Nenhum','1','2','3','4','5','6','7'].map(v=>`<button class="opt-btn-sm ${d.m1_ipaq_caminhada_dias===v?'active':''}" onclick="selectOpt('ipaq1a-opts','m1_ipaq_caminhada_dias','${v}',this);ipaqToggle('ipaq1b','${v}')">${v}</button>`).join('')}
         </div>
-        <input type="hidden" id="m1_ipaq_1a" value="${d.m1_ipaq_1a||''}">
+        <input type="hidden" id="m1_ipaq_caminhada_dias" value="${d.m1_ipaq_caminhada_dias||''}">
       </div>
-      <div id="ipaq1b" style="display:${showSub('m1_ipaq_1a')?'block':'none'}">
+      <div id="ipaq1b" style="display:${showSub('m1_ipaq_caminhada_dias')?'block':'none'}">
         <div class="field-group">
           <label class="field-label">1b) Nos dias em que caminhou, quanto tempo por dia? <span class="required">*</span></label>
-          <div class="input-row">
-            <div><label class="field-label">Horas</label><input type="number" id="m1_ipaq_1b_h" min="0" max="24" placeholder="horas" value="${v('m1_ipaq_1b_h')}"></div>
-            <div><label class="field-label">Minutos</label><input type="number" id="m1_ipaq_1b_m" min="0" max="59" placeholder="min" value="${v('m1_ipaq_1b_m')}"></div>
-          </div>
+          <input type="time" id="m1_ipaq_caminhada_tempo" value="${d.m1_ipaq_caminhada_tempo||''}">
         </div>
       </div>
     </div>
@@ -1256,17 +1252,14 @@ function renderIPAQ(mId) {
       <div class="field-group">
         <label class="field-label">2a) Em quantos dias realizou atividades MODERADAS por pelo menos 10 minutos (pedalar leve, nadar, dançar, ginástica aeróbica leve, serviços domésticos)? <span class="required">*</span></label>
         <div class="options-row" id="ipaq2a-opts">
-          ${['Nenhum','1','2','3','4','5','6','7'].map(v=>`<button class="opt-btn-sm ${d.m1_ipaq_2a===v?'active':''}" onclick="selectOpt('ipaq2a-opts','m1_ipaq_2a','${v}',this);ipaqToggle('ipaq2b','${v}')">${v}</button>`).join('')}
+          ${['Nenhum','1','2','3','4','5','6','7'].map(v=>`<button class="opt-btn-sm ${d.m1_ipaq_moderada_dias===v?'active':''}" onclick="selectOpt('ipaq2a-opts','m1_ipaq_moderada_dias','${v}',this);ipaqToggle('ipaq2b','${v}')">${v}</button>`).join('')}
         </div>
-        <input type="hidden" id="m1_ipaq_2a" value="${d.m1_ipaq_2a||''}">
+        <input type="hidden" id="m1_ipaq_moderada_dias" value="${d.m1_ipaq_moderada_dias||''}">
       </div>
-      <div id="ipaq2b" style="display:${showSub('m1_ipaq_2a')?'block':'none'}">
+      <div id="ipaq2b" style="display:${showSub('m1_ipaq_moderada_dias')?'block':'none'}">
         <div class="field-group">
           <label class="field-label">2b) Quanto tempo por dia fez atividades moderadas? <span class="required">*</span></label>
-          <div class="input-row">
-            <div><label class="field-label">Horas</label><input type="number" id="m1_ipaq_2b_h" min="0" max="24" placeholder="horas" value="${v('m1_ipaq_2b_h')}"></div>
-            <div><label class="field-label">Minutos</label><input type="number" id="m1_ipaq_2b_m" min="0" max="59" placeholder="min" value="${v('m1_ipaq_2b_m')}"></div>
-          </div>
+          <input type="time" id="m1_ipaq_moderada_tempo" value="${d.m1_ipaq_moderada_tempo||''}">
         </div>
       </div>
     </div>
@@ -1276,17 +1269,14 @@ function renderIPAQ(mId) {
       <div class="field-group">
         <label class="field-label">3a) Em quantos dias realizou atividades VIGOROSAS por pelo menos 10 minutos (correr, futebol, pedalar rápido, basquete, ginástica aeróbica intensa, carregar pesos elevados)? <span class="required">*</span></label>
         <div class="options-row" id="ipaq3a-opts">
-          ${['Nenhum','1','2','3','4','5','6','7'].map(v=>`<button class="opt-btn-sm ${d.m1_ipaq_3a===v?'active':''}" onclick="selectOpt('ipaq3a-opts','m1_ipaq_3a','${v}',this);ipaqToggle('ipaq3b','${v}')">${v}</button>`).join('')}
+          ${['Nenhum','1','2','3','4','5','6','7'].map(v=>`<button class="opt-btn-sm ${d.m1_ipaq_vigorosa_dias===v?'active':''}" onclick="selectOpt('ipaq3a-opts','m1_ipaq_vigorosa_dias','${v}',this);ipaqToggle('ipaq3b','${v}')">${v}</button>`).join('')}
         </div>
-        <input type="hidden" id="m1_ipaq_3a" value="${d.m1_ipaq_3a||''}">
+        <input type="hidden" id="m1_ipaq_vigorosa_dias" value="${d.m1_ipaq_vigorosa_dias||''}">
       </div>
-      <div id="ipaq3b" style="display:${showSub('m1_ipaq_3a')?'block':'none'}">
+      <div id="ipaq3b" style="display:${showSub('m1_ipaq_vigorosa_dias')?'block':'none'}">
         <div class="field-group">
           <label class="field-label">3b) Quanto tempo por dia fez atividades vigorosas? <span class="required">*</span></label>
-          <div class="input-row">
-            <div><label class="field-label">Horas</label><input type="number" id="m1_ipaq_3b_h" min="0" max="24" placeholder="horas" value="${v('m1_ipaq_3b_h')}"></div>
-            <div><label class="field-label">Minutos</label><input type="number" id="m1_ipaq_3b_m" min="0" max="59" placeholder="min" value="${v('m1_ipaq_3b_m')}"></div>
-          </div>
+          <input type="time" id="m1_ipaq_vigorosa_tempo" value="${d.m1_ipaq_vigorosa_tempo||''}">
         </div>
       </div>
     </div>
@@ -1296,17 +1286,11 @@ function renderIPAQ(mId) {
       <div class="info-box" style="margin-bottom:12px">Inclui trabalho, estudo, descanso, TV, leitura. <strong>Não inclui</strong> transporte (ônibus, carro, metrô).</div>
       <div class="field-group">
         <label class="field-label">4a) Quanto tempo no total você gasta sentado durante um dia de <strong>semana</strong>? <span class="required">*</span></label>
-        <div class="input-row">
-          <div><label class="field-label">Horas</label><input type="number" id="m1_ipaq_4a_h" min="0" max="24" placeholder="horas" value="${v('m1_ipaq_4a_h')}"></div>
-          <div><label class="field-label">Minutos</label><input type="number" id="m1_ipaq_4a_m" min="0" max="59" placeholder="min" value="${v('m1_ipaq_4a_m')}"></div>
-        </div>
+        <input type="time" id="m1_ipaq_sentado_semana" value="${d.m1_ipaq_sentado_semana||''}">
       </div>
       <div class="field-group">
         <label class="field-label">4b) Quanto tempo no total você gasta sentado durante um dia de <strong>final de semana</strong>? <span class="required">*</span></label>
-        <div class="input-row">
-          <div><label class="field-label">Horas</label><input type="number" id="m1_ipaq_4b_h" min="0" max="24" placeholder="horas" value="${v('m1_ipaq_4b_h')}"></div>
-          <div><label class="field-label">Minutos</label><input type="number" id="m1_ipaq_4b_m" min="0" max="59" placeholder="min" value="${v('m1_ipaq_4b_m')}"></div>
-        </div>
+        <input type="time" id="m1_ipaq_sentado_fds" value="${d.m1_ipaq_sentado_fds||''}">
       </div>
     </div>
 
@@ -1323,43 +1307,41 @@ function ipaqToggle(blockId, val) {
 }
 
 function submitIPAQ(mId) {
-  const d = STATE[mId].data;
-  const fields = ['m1_ipaq_1a','m1_ipaq_2a','m1_ipaq_3a','m1_ipaq_4a_h','m1_ipaq_4a_m','m1_ipaq_4b_h','m1_ipaq_4b_m'];
-  const labels = {m1_ipaq_1a:'Seção 1 — dias caminhando',m1_ipaq_2a:'Seção 2 — dias moderado',m1_ipaq_3a:'Seção 3 — dias vigoroso',
-    m1_ipaq_4a_h:'Seção 4a — horas sentado (semana)',m1_ipaq_4a_m:'Seção 4a — minutos sentado (semana)',
-    m1_ipaq_4b_h:'Seção 4b — horas sentado (fim de semana)',m1_ipaq_4b_m:'Seção 4b — minutos sentado (fim de semana)'};
+  const labels = {
+    m1_ipaq_caminhada_dias: 'Seção 1 — dias caminhando',
+    m1_ipaq_moderada_dias:  'Seção 2 — dias atividade moderada',
+    m1_ipaq_vigorosa_dias:  'Seção 3 — dias atividade vigorosa'
+  };
 
-  for (const f of ['m1_ipaq_1a','m1_ipaq_2a','m1_ipaq_3a']) {
-    const v = document.getElementById(f)?.value;
-    if (!v) { showToast(`Obrigatório: ${labels[f]}`); return; }
+  for (const f of ['m1_ipaq_caminhada_dias','m1_ipaq_moderada_dias','m1_ipaq_vigorosa_dias']) {
+    const val = document.getElementById(f)?.value;
+    if (!val) { showToast(`Obrigatório: ${labels[f]}`); return; }
   }
 
-  // Validar sub-campos quando dias > 0
-  const checkSub = (daysKey, hKey, mKey) => {
+  const checkSub = (daysKey, tempoKey, label) => {
     const days = document.getElementById(daysKey)?.value;
     if (days && days !== 'Nenhum') {
-      const h = document.getElementById(hKey)?.value;
-      const m = document.getElementById(mKey)?.value;
-      if (!h && !m) { showToast(`Informe o tempo diário para ${labels[daysKey]}.`); return false; }
+      if (!document.getElementById(tempoKey)?.value) {
+        showToast(`Informe o tempo diário para ${label}.`); return false;
+      }
     }
     return true;
   };
-  if (!checkSub('m1_ipaq_1a','m1_ipaq_1b_h','m1_ipaq_1b_m')) return;
-  if (!checkSub('m1_ipaq_2a','m1_ipaq_2b_h','m1_ipaq_2b_m')) return;
-  if (!checkSub('m1_ipaq_3a','m1_ipaq_3b_h','m1_ipaq_3b_m')) return;
+  if (!checkSub('m1_ipaq_caminhada_dias','m1_ipaq_caminhada_tempo','caminhada')) return;
+  if (!checkSub('m1_ipaq_moderada_dias', 'm1_ipaq_moderada_tempo', 'atividade moderada')) return;
+  if (!checkSub('m1_ipaq_vigorosa_dias', 'm1_ipaq_vigorosa_tempo', 'atividade vigorosa')) return;
 
-  const h4a = document.getElementById('m1_ipaq_4a_h')?.value;
-  const m4a = document.getElementById('m1_ipaq_4a_m')?.value;
-  if (!h4a && !m4a) { showToast('Obrigatório: Seção 4a — informe horas ou minutos sentado (semana)'); return; }
+  if (!document.getElementById('m1_ipaq_sentado_semana')?.value)
+    { showToast('Obrigatório: Seção 4a — tempo sentado (semana)'); return; }
+  if (!document.getElementById('m1_ipaq_sentado_fds')?.value)
+    { showToast('Obrigatório: Seção 4b — tempo sentado (fim de semana)'); return; }
 
-  const h4b = document.getElementById('m1_ipaq_4b_h')?.value;
-  const m4b = document.getElementById('m1_ipaq_4b_m')?.value;
-  if (!h4b && !m4b) { showToast('Obrigatório: Seção 4b — informe horas ou minutos sentado (fim de semana)'); return; }
-
-  const allFields = ['m1_ipaq_1a','m1_ipaq_1b_h','m1_ipaq_1b_m',
-    'm1_ipaq_2a','m1_ipaq_2b_h','m1_ipaq_2b_m',
-    'm1_ipaq_3a','m1_ipaq_3b_h','m1_ipaq_3b_m',
-    'm1_ipaq_4a_h','m1_ipaq_4a_m','m1_ipaq_4b_h','m1_ipaq_4b_m'];
+  const allFields = [
+    'm1_ipaq_caminhada_dias','m1_ipaq_caminhada_tempo',
+    'm1_ipaq_moderada_dias', 'm1_ipaq_moderada_tempo',
+    'm1_ipaq_vigorosa_dias', 'm1_ipaq_vigorosa_tempo',
+    'm1_ipaq_sentado_semana','m1_ipaq_sentado_fds'
+  ];
   collectFormData(mId, allFields);
   advanceStep(mId);
 }
@@ -1643,7 +1625,7 @@ function submitPremissaoB(mId) {
 function renderPausa(mId, stepIdx, total) {
   const mNum = mId === 'm1' ? 1 : mId === 'm2' ? 2 : 3;
   const tsKey = `${mId}_pausa_vfc_pvt_ts`;
-  STATE[mId].data[tsKey] = new Date().toISOString();
+  STATE[mId].data[tsKey] = new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
   saveState();
 
   setApp(`<div class="screen fade-in">
@@ -1907,7 +1889,7 @@ function submitNASATLX(mId) {
 function completeMoment(mId) {
   STATE[mId].status = 'done';
   STATE[mId].step = STEPS[mId].length;
-  STATE[mId].endTs = new Date().toISOString();
+  STATE[mId].endTs = new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
   saveState();
 
   const mNum = mId === 'm1' ? 1 : mId === 'm2' ? 2 : 3;
